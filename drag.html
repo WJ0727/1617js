@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#wrap{width: 426px;height:640px;margin: 0 auto;background: url(images/iphone.jpg) no-repeat;position: relative;}
+		    #block{position: absolute;left:32px;top:546px;display: block;}
+		    #home{position: absolute;left:0;top:20px;display:none;width: 100px;height: 100px;}
+		</style>
+		<script src="MoveAndstartMove.js"></script>
+		<script>
+			window.onload=function(){
+				var aWrap=document.getElementById("wrap")
+				var aImg=document.getElementById("block")
+				var aHome=document.getElementById("home")
+				aImg.onmousedown=function(ev){
+					ev=ev||event;
+					ev.preventDefault&&ev.preventDefault();
+					ev.returnValue&&(ev.returnValue=false);
+					aImg.setCapture&&aImg.setCapture();
+					var disX=ev.clientX-aImg.offsetLeft;
+                    var firstL=aImg.offsetLeft;
+                     aImg.onmousemove=function(ev){
+                     	var l=ev.clientX-disX
+                     	ev=ev||event;
+					    l= l<32 ? 32 : l;
+					    l= l>300 ? 300 :l;
+					    aImg.style.left=l+"px";
+					    //startMove(this,{left:l});
+					    //console.log(ev.clientX-disX);
+					    aImg.onmouseup=function(){
+				    		aImg.onmouseup=aImg.onmousemove=null;
+	                     	aImg.releaseCapture&&aImg.releaseCapture();
+	                     	if(l<150){
+	                     		//console.log(ev.clientX-disX);
+	                     		aImg.style.left=firstL+"px";
+	                     		//startMove(this,{left:firstL});
+	                     	}else{
+	                     		aImg.style.left=300+"px";
+	                     		//startMove(this,{left:300});
+	                     		aWrap.style.background="url(images/iphone2.jpg)";
+	                     		aImg.style.display="none";
+	                     		aHome.style.display="block";
+	                     	}
+	                    }	 
+                    }
+	                aHome.onclick=function(){
+						aWrap.style.background="url(images/iphone.jpg)";
+		                this.style.display="none";
+		                aImg.style.display="block";
+						aImg.style.left=firstL+"px";
+					}     
+				}
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div id="wrap">
+			<img id="block" src="images/unlock_btn.jpg" />
+			<img id="home" src="images/home.png" />
+		</div>
+	</body>
+</html>
